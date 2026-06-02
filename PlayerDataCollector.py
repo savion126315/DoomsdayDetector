@@ -1,6 +1,6 @@
 import requests
 
-def iracingcheck():
+def iracingcheck() -> bool:
     APP_ID = 266410
 
     url = "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/"
