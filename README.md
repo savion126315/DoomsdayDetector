@@ -32,3 +32,9 @@ Report sent out every morning over email.
 	The script runs every morning and sends us a text or email giving us the metrics
 
 Version 3:
+
+
+
+Notes:
+To activate Venv:
+.\.venv\Scripts\Activate.ps1
