@@ -9,9 +9,10 @@ from PlayerDataCollector import iracingcheck
 
 class DoomsdayDetector():
 
-    def __init__(self):
+    def __init__(self):  # Note: All these must add to 1.
         self.weights = {"subway": 0.25,
-                        "iracing": 0.1
+                        "iracing": 0.1,
+                        "dmv": 0.3
                         }
         
         self.values_dict = {}
@@ -26,8 +27,9 @@ class DoomsdayDetector():
     def calculator(self) -> float:
         self.subway_scaled = self.values_dict["subway"]*self.weights["subway"]
         self.iracing_scaled = self.values_dict["iracing"]*self.weights["iracing"]
+        self.dmv_scaled = self.values_dict["dmv"]*self.weights["dmv"]
 
-        self.percentage_chance = self.subway_scaled + self.iracing
+        self.percentage_chance = self.subway_scaled + self.iracing + self.dmv_scaled
     
     def aggregator(self) -> str:
         pass
