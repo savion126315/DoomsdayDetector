@@ -23,4 +23,4 @@ def dmv_wait_times() -> bool:
     else:
         return True
     
-print(dmv_wait_times())
+# print(dmv_wait_times())
