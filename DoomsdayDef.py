@@ -48,4 +48,5 @@ class DoomsdayDetector():
     def reporter(self) -> None:
         logger = utils.get_logger("Reporter")
         logger.info("Sending out email report!")
-        send_email(["savionragster@gmail.com", "johnnyflips916@gmail.com"], f"There is a {1-self.percent_chance} that the world has ended.")
+        send_email(["savionragster@gmail.com", "johnnyflips916@gmail.com"],
+                    f"There is a {1-self.percent_chance} that the world has ended.")
