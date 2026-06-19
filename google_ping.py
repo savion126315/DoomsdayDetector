@@ -18,7 +18,7 @@ def ping(ip):
         return False
 
 
-def google_ping():
+def google_ping() -> bool:
     if ping("8.8.8.8") == True:
         print("Host is up")
         return True
