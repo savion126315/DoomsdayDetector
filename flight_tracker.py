@@ -16,4 +16,4 @@ def get_airborne_aircraft_count():
 
     return len(airborne) > 500
 
-print(get_airborne_aircraft_count())
+# print(get_airborne_aircraft_count())

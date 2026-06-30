@@ -1,8 +1,8 @@
 """
 Class Definition for Doomsday Detector. 
 
-
 """
+ 
 from nyc_subway import subway_running
 from PlayerDataCollector import iracingcheck
 from dmv import dmv_wait_times
@@ -24,11 +24,11 @@ class DoomsdayDetector():
                         }
         
         self.values_dict = {}
-        self.percentage_chance = 0
+        self.percentage_chance = 0  # Percent chance the world has ended.
 
     def collection(self) -> None:
-        logger = utils.get_logger("Collection")
-        logger.info("Collecting world stats...")
+        # logger = utils.get_logger("Collection")
+        # logger.info("Collecting world stats...")
 
         self.values_dict = {"subway":subway_running(),
                             "iracing": iracingcheck(),
@@ -36,21 +36,23 @@ class DoomsdayDetector():
                             "flights": get_airborne_aircraft_count(),
                             "google": google_ping()
                             }
+        print(self.values_dict.values())
         return None
 
     def calculator(self) -> float:
-        logger = utils.get_logger("Calculator")
-        logger.info("Crunching numbers")
+        # logger = utils.get_logger("Calculator")
+        # logger.info("Crunching numbers")
 
         self.subway_scaled = self.values_dict["subway"]*self.weights["subway"]
         self.iracing_scaled = self.values_dict["iracing"]*self.weights["iracing"]
-        self.dmv_scaled = self.values_dict["dmv"]*self.weights["dmv"]
+        self.dmv_scaled = self.values_dict["DMV"]*self.weights["dmv"]
         self.flights_scaled = self.values_dict["flights"]*self.weights["flights"]
         self.google_scaled = self.values_dict["google"]*self.weights["google"]       
 
         self.percentage_chance = self.subway_scaled + self.iracing_scaled + self.dmv_scaled + self.flights_scaled + self.google_scaled  # Total percent chance.
-  
+        return self.percentage_chance
+
     def reporter(self) -> None:
-        logger = utils.get_logger("Reporter")
-        logger.info("Sending out email report!")
+        # logger = utils.get_logger("Reporter")
+        # logger.info("Sending out email report!")
         send_email(self.email_list, f"There is a {1-self.percentage_chance} that the world has ended.")
