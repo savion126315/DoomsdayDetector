@@ -9,7 +9,7 @@ from dmv import dmv_wait_times
 from email_handler import send_email
 from flight_tracker import get_airborne_aircraft_count
 from google_ping import google_ping
-import utils
+from logging_helper import utils
 
 
 class DoomsdayDetector():
@@ -27,8 +27,8 @@ class DoomsdayDetector():
         self.percentage_chance = 0  # Percent chance the world has ended.
 
     def collection(self) -> None:
-        # logger = utils.get_logger("Collection")
-        # logger.info("Collecting world stats...")
+        logger = utils.get_logger("Collection")
+        logger.info("Collecting world stats...")
 
         self.values_dict = {"subway":subway_running(),
                             "iracing": iracingcheck(),
@@ -40,8 +40,8 @@ class DoomsdayDetector():
         return None
 
     def calculator(self) -> float:
-        # logger = utils.get_logger("Calculator")
-        # logger.info("Crunching numbers")
+        logger = utils.get_logger("Calculator")
+        logger.info("Crunching numbers")
 
         self.subway_scaled = self.values_dict["subway"]*self.weights["subway"]
         self.iracing_scaled = self.values_dict["iracing"]*self.weights["iracing"]
@@ -50,9 +50,10 @@ class DoomsdayDetector():
         self.google_scaled = self.values_dict["google"]*self.weights["google"]       
 
         self.percentage_chance = self.subway_scaled + self.iracing_scaled + self.dmv_scaled + self.flights_scaled + self.google_scaled  # Total percent chance.
+        logger.info(f"Calculated a {self.percentage_chance}% chance world is ok!")
         return self.percentage_chance
 
     def reporter(self) -> None:
-        # logger = utils.get_logger("Reporter")
-        # logger.info("Sending out email report!")
-        send_email(self.email_list, f"There is a {1-self.percentage_chance} that the world has ended.")
+        logger = utils.get_logger("Reporter")
+        logger.info("Sending out email report!")
+        send_email(self.email_list, f"There is a {1-self.percentage_chance}% chance that the world has ended.")

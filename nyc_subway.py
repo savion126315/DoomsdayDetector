@@ -3,7 +3,12 @@ from google.transit import gtfs_realtime_pb2
 import time
 from datetime import datetime
 
+
 def subway_running() -> bool:
+    """
+    Returns True if more than 1 train is coming and is less than 30 mins away. 
+    """
+
     FEED_URL = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-jz"
 
     # Myrtle Ave stop IDs
@@ -28,7 +33,8 @@ def subway_running() -> bool:
 
     arrivals.sort()
 
-    #print("Upcoming trains at Myrtle Ave:\n")
+    # print("\nSubway report for trains at Myrtle Ave:")
+    # print("_"*40)
     trains_arriving = False
     trains_arriving = len(arrivals) > 0
     arrival_soon = False
@@ -37,14 +43,15 @@ def subway_running() -> bool:
     for t in arrivals[:1]:
         readable = datetime.fromtimestamp(t).strftime("%H:%M:%S")
         minutes = int((t - time.time()) / 60)
-        #print(f"{readable} (~{minutes} min)")
-
-      #  print(len(arrivals) > 0)
+        # print(f"Next train at: {readable} (~{minutes} min)")
+        trains_arriving = len(arrivals) > 0
         arrival_soon = minutes < 30
-      #  print(minutes < 30)  # Is nearest train less than 30 mins awayy?
-    if train_arriving and arrival_soon:
+        # print(f"Next train < 30 mins away: {arrival_soon}")  # Is nearest train less than 30 mins awayy?
+        # print(f"Are any trains coming: {trains_arriving}")
+
+    if trains_arriving and arrival_soon:
         return True
     else:
         return  False
 
-#print(subway_running())  # Returns (True, True) if more than 1 train is coming and is less than 30 mins away. 
+# print(subway_running())  

@@ -10,7 +10,7 @@ def ping(ip):
         stderr=subprocess.DEVNULL
     )
 
-    print(result.returncode)
+  #  print(result.returncode)
 
     if result.returncode == 0:
         return True
@@ -20,8 +20,8 @@ def ping(ip):
 
 def google_ping() -> bool:
     if ping("8.8.8.8") == True:
-        print("Host is up")
+       # print("Host is up")
         return True
     else:
-        print("Host is down")
+       # print("Host is down")
         return False
