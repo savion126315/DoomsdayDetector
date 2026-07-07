@@ -2,6 +2,7 @@ import requests
 from google.transit import gtfs_realtime_pb2
 import time
 from datetime import datetime
+import test_metrics
 
 
 def subway_running() -> bool:
@@ -13,6 +14,9 @@ def subway_running() -> bool:
 
     # Myrtle Ave stop IDs
     MYRTLE_STOPS = {"J27N", "J27S"}
+    trains_arriving = False  # If any trains are coming at all.
+    arrival_soon = False  # Bool if train is coming < 30 mins. 
+    
 
     response = requests.get(FEED_URL)
 
@@ -35,10 +39,7 @@ def subway_running() -> bool:
 
     # print("\nSubway report for trains at Myrtle Ave:")
     # print("_"*40)
-    trains_arriving = False
-    trains_arriving = len(arrivals) > 0
-    arrival_soon = False
-    train_arriving = False
+    trains_arriving = len(arrivals) > 0  # If there's at least one train coming.
 
     for t in arrivals[:1]:
         readable = datetime.fromtimestamp(t).strftime("%H:%M:%S")
@@ -49,6 +50,8 @@ def subway_running() -> bool:
         # print(f"Next train < 30 mins away: {arrival_soon}")  # Is nearest train less than 30 mins awayy?
         # print(f"Are any trains coming: {trains_arriving}")
 
+    test_metrics.record("nyc_subway,Myrtle_stop", "trains_arrivig", trains_arriving)
+    test_metrics.record("nyc_subway,Myrtle_stop", "arrival_soon", arrival_soon)
     if trains_arriving and arrival_soon:
         return True
     else:
