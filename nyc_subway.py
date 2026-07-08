@@ -50,7 +50,7 @@ def subway_running() -> bool:
         # print(f"Next train < 30 mins away: {arrival_soon}")  # Is nearest train less than 30 mins awayy?
         # print(f"Are any trains coming: {trains_arriving}")
 
-    test_metrics.record("nyc_subway,Myrtle_stop", "trains_arrivig", trains_arriving)
+    test_metrics.record("nyc_subway,Myrtle_stop", "trains_arriving", trains_arriving)
     test_metrics.record("nyc_subway,Myrtle_stop", "arrival_soon", arrival_soon)
     if trains_arriving and arrival_soon:
         return True
