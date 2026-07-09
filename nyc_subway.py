@@ -14,8 +14,8 @@ def subway_running() -> bool:
 
     # Myrtle Ave stop IDs
     MYRTLE_STOPS = {"J27N", "J27S"}
-    trains_arriving = False  # If any trains are coming at all.
-    arrival_soon = False  # Bool if train is coming < 30 mins. 
+    trains_arrving_bool = False  # If any trains are coming at all.
+    arrival_soon_bool = False  # Bool if train is coming < 30 mins. 
     
 
     response = requests.get(FEED_URL)
@@ -36,25 +36,22 @@ def subway_running() -> bool:
                 arrivals.append(stop_time.arrival.time)
 
     arrivals.sort()
-
-    # print("\nSubway report for trains at Myrtle Ave:")
-    # print("_"*40)
-    trains_arriving = len(arrivals) > 0  # If there's at least one train coming.
+    trains_arriving_num = len(arrivals) > 0  # If there's at least one train coming.
 
     for t in arrivals[:1]:
         readable = datetime.fromtimestamp(t).strftime("%H:%M:%S")
         minutes = int((t - time.time()) / 60)
         # print(f"Next train at: {readable} (~{minutes} min)")
-        trains_arriving = len(arrivals) > 0
-        arrival_soon = minutes < 30
-        # print(f"Next train < 30 mins away: {arrival_soon}")  # Is nearest train less than 30 mins awayy?
-        # print(f"Are any trains coming: {trains_arriving}")
 
-    test_metrics.record("nyc_subway,Myrtle_stop", "trains_arriving", trains_arriving)
-    test_metrics.record("nyc_subway,Myrtle_stop", "arrival_soon", arrival_soon)
-    if trains_arriving and arrival_soon:
+        trains_arriving_num: int = len(arrivals)
+        trains_arrving_bool: bool = trains_arriving_num > 0 
+        next_train_arriving_min = minutes
+        arrival_soon_bool: bool = next_train_arriving_min < 30
+        test_metrics.record("nyc_subway,Myrtle_stop", "trains_arriving", trains_arriving_num)
+        test_metrics.record("nyc_subway,Myrtle_stop", "arrival_soon", next_train_arriving_min)
+
+    if arrival_soon_bool and trains_arrving_bool:
         return True
     else:
         return  False
-
-# print(subway_running())  
+    
