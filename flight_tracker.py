@@ -1,4 +1,5 @@
 import requests
+import test_metrics
 
 def get_airborne_aircraft_count():
     url = "https://opensky-network.org/api/states/all"
@@ -13,7 +14,5 @@ def get_airborne_aircraft_count():
         aircraft for aircraft in states
         if aircraft[8] is False  # index 8 = on_ground
         ]
-
+    test_metrics.record("Flight_Tracker", "aircraft_in_flight", len(airborne))
     return len(airborne) > 500
-
-# print(get_airborne_aircraft_count())

@@ -1,4 +1,5 @@
 import requests
+import test_metrics
 
 def iracingcheck() -> bool:
     APP_ID = 266410
@@ -10,5 +11,6 @@ def iracingcheck() -> bool:
 
     data = resp.json()
     players_online = data["response"]["player_count"]
+    test_metrics.record("iRacing_Check", "iracing_players", players_online)
 
     return players_online > 0
